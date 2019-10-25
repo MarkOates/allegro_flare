@@ -8,6 +8,7 @@ compiler:
 
 before_install:
     - if [ `uname` = "Darwin" ]; then
+        ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null 2> /dev/null;
         brew install castxml;
         git clone https://github.com/gccxml/pygccxml.git;
         cd pygccxml;
