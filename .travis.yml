@@ -2,24 +2,11 @@ language: c++
 
 os:
   - osx
-  - linux
 
 compiler:
   - clang
-  - gcc
 
 before_install:
-    - if [ `uname` = "Darwin" ]; then
-         git clone https://github.com/google/googletest;
-         cd googletest;
-         mkdir build;
-         cd build;
-         cmake ..;
-         make;
-         make install;
-         cd ..;
-         cd ..;
-      fi
     - if [ `uname` = "Darwin" ]; then
         brew install castxml;
         git clone https://github.com/gccxml/pygccxml.git;
@@ -27,25 +14,8 @@ before_install:
         python setup.py install;
         cd ..;
       fi
-    - if [ `uname` = "Linux" ]; then
-         sudo apt-get update;
-         sudo apt-get install -y libvorbis-dev libtheora-dev libphysfs-dev libdumb1-dev libflac-dev libpulse-dev libgtk2.0-dev pandoc libcurl4-nss-dev libenet-dev pulseaudio;
-         sudo add-apt-repository ppa:allegro/5.2 -y;
-         sudo apt-get update -q;
-         sudo apt-get install -y liballegro5-dev;
-      elif [ `uname` = "Darwin" ]; then
-         brew install opusfile libvorbis freetype flac physfs;
-         brew install allegro;
-      fi
 
 script:
-  - make
-  - if [ `uname` = "Darwin" ]; then
-      make tests;
-    fi
-  - if [ `uname` = "Darwin" ]; then
-      make examples;
-    fi
   - if [ `uname` = "Darwin" ]; then
       make build_documentation;
     fi
