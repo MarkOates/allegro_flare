@@ -141,8 +141,8 @@ public:
 			Shader::set_sampler("diffuse_texture", diffuse_texture, 2);
 			Shader::set_sampler("specular_texture", specular_texture, 3);
 			Shader::set_sampler("normal_texture", normal_texture, 4);
-         //Shader::set_sampler_cube("cube_map_A", cube_map_A, 5);
-			//Shader::set_sampler_cube("cube_map_B", cube_map_B, 6);
+         Shader::set_sampler_cube("cube_map_A", cube_map_A, 3);
+			//Shader::set_sampler_cube("cube_map_B", cube_map_B, 4); // <- this crashes in some cases
 			place.build_transform(&transform);
 			Shader::set_vec3("camera_position", camera_position);
 			Shader::set_mat4("position_transform", &transform);
@@ -179,8 +179,8 @@ public:
 			}
 			//Shader::set_sampler("specular_texture", specular_texture, 3);
 			//Shader::set_sampler("normal_texture", normal_texture, 4);
-			Shader::set_sampler_cube("cube_map_A", cube_map_A, 5);
-			Shader::set_sampler_cube("cube_map_B", cube_map_B, 6);
+			Shader::set_sampler_cube("cube_map_A", cube_map_A, 3);
+			Shader::set_sampler_cube("cube_map_B", cube_map_B, 4);
 			if (diffuse_texture) model->set_texture(diffuse_texture);
 		}
 		else
