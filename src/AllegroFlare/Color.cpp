@@ -6,14 +6,125 @@
 
 #include <algorithm>
 #include <cmath>
-#include <math.h>
 #include <sstream>
+#include <iostream>
 
 
 
 
 namespace AllegroFlare
 {
+   inline float Color::clamp_color(float v){
+      return (v>1.0f) ? 1.0f : ((v<0.0f) ? 0.0f : v);
+   }
+   
+   Color::Color() : r(0.0f), g(0.0f), b(0.0f), a(0.0f)
+   {}
+   
+   Color::Color(ALLEGRO_COLOR allegro_color)
+   {
+      r = allegro_color.r;
+      g = allegro_color.g;
+      b = allegro_color.b;
+      a = allegro_color.a;
+   }
+   
+   Color::Color(int hex, float alpha)
+   {
+      r = (float)(hex & 0xFF0000)/0xFF0000;
+      g = (float)(hex & 0x00FF00)/0xFF00;
+      b = (float)(hex & 0x0000FF)/0xFF;
+   }
+   
+   Color::Color(float r, float g, float b, float a)
+   {
+      this->r = r;
+      this->g = g;
+      this->b = b;
+      this->a = a;
+   }
+   
+   Color Color::rgba(int r, int g, int b, float a)
+   {
+      return Color(
+         (float)r/255,
+         (float)g/255,
+         (float)b/255,
+         a);
+   }
+   
+   Color::Color(std::string color_name, float alpha)
+   {
+      ALLEGRO_COLOR color = al_color_name(color_name.c_str());
+      r = color.r;
+      g = color.g;
+      b = color.b;
+      a = alpha;
+   }
+   
+   Color Color::mix(Color &c1, Color &c2, float scale)
+   {
+      Color col;
+      col.r = (c2.r - c1.r) * scale + c1.r;
+      col.g = (c2.g - c1.g) * scale + c1.g;
+      col.b = (c2.b - c1.b) * scale + c1.b;
+      col.a = (c2.a - c1.a) * scale + c1.a;
+      return col;
+   }
+   
+   Color::~Color()
+   {}
+   
+   Color Color::operator+(const Color &c2){
+      return Color(
+         clamp_color(r + c2.r),
+         clamp_color(g + c2.g),
+         clamp_color(b + c2.b),
+         clamp_color(a + c2.a)
+      );
+   }
+   
+   Color Color::operator-(const Color &c2){
+      return Color(
+         clamp_color(r - c2.r),
+         clamp_color(g - c2.g),
+         clamp_color(b - c2.b),
+         clamp_color(a - c2.a)
+      );
+   }
+   
+   Color Color::operator*(const Color &c2){
+      return Color(
+         clamp_color(r * c2.r),
+         clamp_color(g * c2.g),
+         clamp_color(b * c2.b),
+         clamp_color(a * c2.a)
+      );
+   }
+   
+   Color operator*(const Color &c, float k){
+      return Color(
+         Color::clamp_color(c.r * k),
+         Color::clamp_color(c.g * k),
+         Color::clamp_color(c.b * k),
+         c.a // alpha value really shouldn't be modified by a multiplication with a float
+      );
+   }
+   
+   Color operator*(float k, const Color &c){
+      return Color(
+         Color::clamp_color(c.r * k),
+         Color::clamp_color(c.g * k),
+         Color::clamp_color(c.b * k),
+         c.a // alpha value really shouldn't be modified by a multiplication with a float
+      );
+   }
+   
+   std::ostream& operator<<(std::ostream& os, const Color &c){
+      os << "rgba(" << c.r*255 << "," << c.g*255 << "," << c.b*255 << "," << c.a << ")";
+      return os;
+   }
+   
    ALLEGRO_COLOR operator+(const ALLEGRO_COLOR& lhs, const ALLEGRO_COLOR& rhs)
    {
       ALLEGRO_COLOR result;

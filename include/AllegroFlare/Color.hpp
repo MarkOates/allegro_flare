@@ -4,12 +4,43 @@
 #include <string>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_color.h>
+#include <iostream>
+//#include <AllegroFlare/Useful.hpp>
 //#include <allegro_flare/color_names.h>
 
 
 
 namespace AllegroFlare
 {
+   class Color
+   {
+   private:
+   public:
+      static inline float clamp_color(float v);
+      
+      Color();
+      ~Color();
+      Color(float r, float g, float b, float a = 1.0f);
+      Color(ALLEGRO_COLOR allegro_color);
+      Color(std::string color_name, float alpha = 1.0f);
+      Color(int hex, float alpha = 1.0f);
+      
+      static Color rgba(int r, int g, int b, float a = 1.0f);
+      
+      Color mix(Color &c1, Color &c2, float scale = 0.5f);
+      
+      Color operator+(const Color &c2);
+      Color operator-(const Color &c2);
+      Color operator*(const Color &c2);
+      
+      friend std::ostream& operator<<(std::ostream& os, const Color& c);
+      
+      float r, g, b, a;
+   };
+   
+   Color operator*(const Color &c, float k);
+   Color operator*(float k, const Color &c);
+   
    ALLEGRO_COLOR operator+(const ALLEGRO_COLOR& lhs, const ALLEGRO_COLOR& rhs);
    ALLEGRO_COLOR operator-(const ALLEGRO_COLOR& lhs, const ALLEGRO_COLOR& rhs);
    ALLEGRO_COLOR operator*(const ALLEGRO_COLOR& lhs, const ALLEGRO_COLOR& rhs);
@@ -249,8 +280,4 @@ namespace AllegroFlare
    }
 
 
-
-
 }
-
-
